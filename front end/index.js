@@ -1,13 +1,13 @@
 function handleFormSubmit(event) {
-    
+
     const name = document.getElementById('username').value;
     const email = document.getElementById('email').value;
-    const phone = document.getElementById('phone').value;
+    const number = document.getElementById('number').value;
 
     const userDetails = {
         name: name,
         email: email,
-        phone: phone
+        number:number
     }
     axios.post('http://localhost:5000/add-user', userDetails)
         .then((response) => {
@@ -30,25 +30,38 @@ window.addEventListener("DOMContentLoaded", () => {
 function showUser(user) {
     document.getElementById('username').value;
     document.getElementById('email').value;
-    document.getElementById('phone').value;
+    document.getElementById('number').value;
     const parent = document.getElementById('listofitems');
-    const child = `<li id=${user.id}>- ${user.name}-${user.email}-${user.number}
-                        <button onclick=Deleteuser('${user.id}')> DELETE </button>
-                        </li>`
-    parent.innerHTML = parent.innerHTML + child;
-}
+    const child = document.createElement('li');
+    child.id = `${user.id}`;
+    child.textContent = `${user.name}-${user.email}-${user.number}`
+    const DelButton = document.createElement('button');
+    DelButton.textContent = 'Delete'
+    DelButton.className = 'delete'
+    //parent.innerHTML = parent.innerHTML + child;
+    parent.appendChild(child);
+    child.appendChild(DelButton);
 
-function Deleteuser (userId){
-    axios.delete(`http://localhost:5000/delete-user/${userId}`)
-    .then((response)=>{ console.log(response)
-        removeUSerFromScreen(userId)})
+    DelButton.addEventListener('click', function Deleteuser() {
+        console.log(child.id);
+        axios.delete(`http://localhost:5000/delete-user/${child.id}`)
+            .then((response) => {
+                // console.log(userId.config)
+                removeUSerFromScreen(child.id)
+                console.log(response);
+            })
 
-}
-
-function removeUSerFromScreen(userId){
-    const parentNode=document.getElementById('listofitems');
-    const childNodeTOBeDeleted=document.getElementById(userId);
-    if(childNodeTOBeDeleted){
-        parentNode.removeChild(childNodeTOBeDeleted);
+    })
+    function removeUSerFromScreen(userId) {
+        const parentNode = document.getElementById('listofitems');
+        const childNodeTOBeDeleted = document.getElementById(userId);
+        if (childNodeTOBeDeleted) {
+            parentNode.removeChild(childNodeTOBeDeleted);
+        }
     }
 }
+
+
+
+
+

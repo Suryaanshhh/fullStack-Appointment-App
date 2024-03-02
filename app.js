@@ -36,9 +36,10 @@ app.post('/add-user',async (req,res,next)=>{
 
 app.delete(`/delete-user/:id`,(req, res, next) => {
     const uId=req.params.id;
+    console.log(uId);
     User.destroy({where:{id:uId}}).then((result)=>{
         console.log(result)
-        res.status(200)
+        res.status(200).json({message:'Successfull'})
     }).catch(err=>console.log(err))
   }
 )

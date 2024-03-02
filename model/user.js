@@ -18,7 +18,7 @@ email:{
     unique:true
 },
 number:{
-    type:Sequelize.INTEGER,
+    type:Sequelize.STRING,
     unique:true
 }
 
