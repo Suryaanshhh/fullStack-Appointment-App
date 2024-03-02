@@ -11,6 +11,15 @@ app.use(Cors());
 
 app.use(bodyParser.json({extended:false}))
 
+app.get('/get-user',(req,res,next)=>{
+    User.findAll().then((users)=>{
+        console.log(users)
+        res.status(200).json({user:users})
+    }).catch(err=>console.log(err))
+})
+
+
+
 app.post('/add-user',async (req,res,next)=>{
     const name=req.body.name;
     const email=req.body.email;
@@ -20,8 +29,18 @@ app.post('/add-user',async (req,res,next)=>{
         email:email,
         number:number
     })
-     res.status(201).json({user:data})
+     res.status(200).json({user:data})
 })
 
+
+
+app.delete(`/delete-user/:id`,(req, res, next) => {
+    const uId=req.params.id;
+    User.destroy({where:{id:uId}}).then((result)=>{
+        console.log(result)
+        res.status(200)
+    }).catch(err=>console.log(err))
+  }
+)
 
 app.listen(5000);
